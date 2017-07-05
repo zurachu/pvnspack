@@ -76,6 +76,7 @@
       <ProgramDatabaseFile>.\Debug/pvnspack.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Midl>
       <TypeLibraryName>.\Debug/pvnspack.tlb</TypeLibraryName>
@@ -110,6 +111,7 @@
       <ProgramDatabaseFile>.\Release/pvnspack.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Midl>
       <TypeLibraryName>.\Release/pvnspack.tlb</TypeLibraryName>
