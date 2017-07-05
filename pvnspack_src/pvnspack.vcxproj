@@ -106,7 +106,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>setargv.obj;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>pvnspack.exe</OutputFile>
+      <OutputFile>.\Release/pvnspack.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Release/pvnspack.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
