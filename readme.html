@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http:www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+
+<head>
+<meta http-equiv="Content-Language" content="ja">
+<meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>P/ECE Tips - データを圧縮展開しよう - てとら★ぽっと / 
+ヅラChu's HomePage</title>
+<style type="text/css">
+<!--
+.bgcolor   { background-color:#99CCFF }
+.text      { line-height:150% ; font-size:10pt; padding-top:16px; padding-bottom:16px }
+BLOCKQUOTE { color:green; background-color:#ffffcc }
+-->
+</style>
+</head>
+
+<body>
+
+<div align="center">   
+  <center>   
+  <table border="0" width="640">   
+    <tr>   
+      <td class="bgcolor">   
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">  
+          <tr>  
+            <td><a href="http://zurachu.net/"><img src="banner.gif" border="1" width="200" height="40"></a></td>  
+      </center>  
+          <td>  
+            <p align="right"><b><font color="#FFFFFF" size="5">P/ECE Tips</font></b></td>   
+        </tr>   
+      </table>   
+    </td>   
+    </tr>   
+  <center>   
+    <tr>   
+      <td width="100%" class="text">   
+        <h2 align="center">データを圧縮展開しよう<font size="2" color="#FF0000">（2004/08/31更新）</font></h2>  
+        <p>　このページでは、『ppack』（P/ECE開発環境に付属）で圧縮したファイルをP/ECEで展開する関数、および<A href="http://zurachu.net/pvns/">『P<font color="#FF0000">/</font>ECE    
+    VISUALNOVEL Scripter』</A>で使用している独自形式の圧縮ファイルパックツール『pvnspack』で圧縮したファイルをP/ECEで展開する関数を公開しています。</p>    
+        <h3 align="center"><a href="ppack2.html#ppack">『ppack』で圧縮展開</a>　<a href="ppack2.html#pvnspack">『pvnspack』フォーマット</a></h3>    
+      </td>          
+    </tr>          
+    <tr>
+      <td class="bgcolor">&nbsp;</td>          
+    </tr>
+    <tr>  
+    <td class="text">     
+    <h3 align="center"><a href="pvnspack.lzh">ダウンロード（Ver.20040831）</a></h3> 
+    <p>【pvnspack】<br>
+    パックできるファイルの最大数を128→256に増やしました。もっと必要な場合は「pvnspack.c」の“#define 
+    FILE_MAX 256”を増やして下さい。<br>
+    【展開関数】<br>
+    パックされたファイルのオフセット情報を読む際、最初の1セクタしか読んでいなかったのを修正しました。<br>
+    <a href="http://www2.plala.or.jp/madoka/">MMC対応カーネル</a>（まどかさん）に対応しました。ご利用は自己責任で。 
+    </p> 
+    <p>2003/12/06<br> 
+    2003/10/14のアップデートで 『pvnspack』の2003/07/02修正前のバージョンがアーカイブに入っていた（バイナリ・ソースとも）ので、アーカイブを修正しました。</p>  
+    <p>2003/10/14<BR>  
+    ppack_findPackData関数を削除し、ppack_findPackDataEx関数を作成しました。使用方法に変更があるのでお読み下さい。また、filepack.oをリンクする必要がなくなりました。</p>  
+    <p>2003/07/02<br>  
+    『pvnspack』で、<A href="http://zurachu.net/pvns/">『P<font color="#FF0000">/</font>VNS』</A>用のpvaファイルではない圧縮パックファイルの作成に失敗するバグを修正。<br>  
+    展開関数myunpack.hの方に変更はありません。</p>  
+    <p>2003/03/21<br>  
+    圧縮パックファイルの拡張子およびシグネチャが標準パックファイルと同じ&quot;.fpk&quot;、&quot;KAPF&quot;だとまずいので、それぞれ&quot;.pva&quot;、&quot;PVNA&quot;に変更。</p>  
+    <p>2003/03/16<br>  
+    初版公開。      
+    </td>      
+    </tr>  
+    <tr>           
+      <td class="bgcolor">&nbsp;</td>          
+    </tr>          
+      </center>          
+  <center>    
+    </center>    
+  <tr> 
+    <td class="text">    
+    <h3 align="center">『pvnspack』の使用方法</h3>
+    <p>　コマンドプロンプトで</p> 
+    <blockquote> 
+    <p>&gt; pvnspack ファイル名1 ファイル名2 …</p>      
+    </blockquote>      
+    <p>と実行すると、各ファイルを圧縮した後、圧縮前のファイル名扱いでパックし、カレントディレクトリにpvnspack.tmpという圧縮パックファイルを作成します。ファイル名指定にはワイルドカードも使用できます。<br>      
+    <br>      
+    　オプションとして、</p> 
+    <blockquote>
+    <p>  
+    pvnspack -o出力ファイル名 ファイル名1 ファイル名2 …</p>      
+    </blockquote>     
+    <p>       
+    とすると、出力ファイル名を指定できます。<br>       
+    <br>       
+    また、拡張子&quot;.pvn&quot;のファイル（<A href="http://zurachu.net/pvns/">P<font color="#FF0000">/</font>VNS</A>シナリオファイル）があった場合、パックファイルのファイル名（拡張子まで）は自動的にシナリオファイルと同じになります（sample.pvnならsample.pva）。この場合、-oオプションを指定しているとエラーになりますので注意して下さい。</p>    
+    </td>        
+  </tr>     
+    <tr>   
+    <td class="bgcolor">&nbsp;</td>        
+    </tr>   
+    <tr>   
+    <td class="text">       
+    <h3 align="center">     
+    展開関数について</h3>   
+    <p><B>int unpack( char *pArcData, char *pOutBuff );</B><BR>    
+    　メモリに配置された圧縮データを展開します。展開先メモリはあらかじめ確保しておく必要があります。<font color="#FF0000">※この関数は内部で呼び出しているので直接使用する必要はありません。</font><BR>
+    （<a href="http://www.jc2.co.jp/p/mainmenu2.htm">P/ECE  
+HAND BOOK Vol.2</a>収録『緋色の霧』のソースを改変）</p> 
+    <p><B>BOOL ppack_checkHeader( unsigned char* arcData );</B><BR> 
+    　メモリに配置された圧縮データのヘッダが正しいかどうか（先頭から4バイトのデータのlong型キャストが0x1c0258か）を返します。<font color="#FF0000">※この関数は内部で呼び出しているので直接使用する必要はありません。</font></p> 
+    <p><B>long ppack_getExpandSize( unsigned char* arcData );</B><BR> 
+    　メモリに配置された圧縮データの展開後のサイズ（先頭から001Ch=28バイト目のデータをlong型にキャスト）を返します。<font color="#FF0000">※この関数は内部で呼び出しているので直接使用する必要はありません。</font></p> 
+    <p><B>unsigned char* ppack_heapUnpack( unsigned char* arcData );</B><BR> 
+    　メモリに配置された圧縮データを、展開用にヒープ領域を確保して、その領域に展開します。圧縮データをメモリに配置する際はpceFileReadSct()関数などを使って下さい。</p> 
+    <BLOCKQUOTE>
+    <p>
+    【例】data = heapUnpack( arcData );    
+    </BLOCKQUOTE>    
+    <p><B>unsigned char* ppack_findPackDataEx( char *fpkName, char *fName );</B><BR>    
+    　フラッシュメモリに配置されている、『pvnspack』で作成した圧縮パックファイルから、指定されたファイル名のファイルを、展開用ヒープ領域を確保して、その領域に展開します。P/ECEの標準パックファイル内のファイルをヒープ領域に読み込むこともできます。</p> 
+    <blockquote>  
+      <p>【例】data = ppack_findPackDataEx( &quot;packfile.pva&quot;,    
+      &quot;arc.txt&quot; );</p>     
+    </blockquote>     
+    <p>      
+    <font color="#FF0000">※ppack_heapUnpack()、ppack_findPackDataEx()の両方について、ヒープ領域を確保して展開するので、展開したファイルが不要になった際に</font>  
+    <blockquote>  
+    <p>    
+    pceHeapFree( data );     
+    </blockquote>     
+    <p>       
+    <FONT color="#FF0000">で必ずヒープ領域を開放して下さい。</FONT>        
+    </td>        
+    </tr>    
+    <tr> 
+    <td class="bgcolor">&nbsp;</td>         
+    </tr> 
+    <tr> 
+    <td class="text">        
+    <h3 align="center">     
+    展開関数の組み込み方法</h3>   
+    <p>　\usr\PIECE\sysdev\ku\から、inflate.c、inflate.h、piecezl.hを、作成中プログラムのフォルダにコピーしてきます。そして関数を使用するプログラムで</p> 
+    <blockquote> 
+      <p>#include &quot;pvnsunpk.h&quot;</p>    
+    </blockquote>    
+    <p>と宣言して下さい。<br> 
+    　コンパイル時は、makefileの「OBJS=」行にpvnsunpk.o、inflate.oを追加して下さい。</p>   
+    </td>       
+    </tr>
+    <tr>
+    <td class="bgcolor">&nbsp;</td>        
+    </tr>
+    <tr>
+    <td class="text">       
+    <h3 align="center">MMC対応カーネルでの使用方法</h3>    
+    <p>　MMC対応カーネルで使用する、つまりMMC上にある『pvnspack』で作成した圧縮パックファイルから ppack_findPackDataEx()関数でデータをヒープ上に展開する場合、MMC対応カーネルのソースに含まれる「mmc_lib.h」「mmc_lib.lib」が必要です。上記と同じ作業のほか、「pvnsunpk.c」で</p>    
+    <blockquote>
+      <p>// #define USE_MMC</p>     
+    </blockquote> 
+    <p>のコメントを解除して下さい。また、メインプログラムで</p>    
+    <blockquote>
+      <p>#include &quot;mmc_lib.h&quot;</p>    
+    </blockquote>
+    <p>と宣言し、pceAppInit()関数内でmmcInit()関数、pceAppExit()関数内でmmcExit()関数をそれぞれ呼び出して下さい。<br>
+    　コンパイル時は、makefileに以下のようにルールを定めると良いでしょう。</p>    
+    <blockquote>
+      <p>mmc : $(OBJS)<br> 
+	$(LD) $(LDFLAGS) -e$(PRGNAME).srf $(OBJS) mmc_api.lib</p>    
+    </blockquote>
+    </td>       
+    </tr>
+  <tr>     
+    <td class="bgcolor">&nbsp;</td>        
+  </tr>     
+  <tr>    
+    <td class="text">       
+    <h3 align="center">Special Thanks</h3>     
+    <p><a href="http://www.oersted.co.jp/~mio_h/piece/">MIO.H</a>氏<br>     
+    P/ECE開発環境付属のfilepackおよびppackのソースコードを利用させていただきました。</p>     
+    <p><a href="http://north.hokkai.net/nsawa/">nsawa</a>氏<br>     
+    『コンソール版filepack』のソースコードを参考にさせていただきました。</p>     
+    <p><a href="http://www.marchen.to/">まかべひろし</a>氏<br>     
+    <a href="http://www.jc2.co.jp/p/mainmenu2.htm">P/ECE HAND BOOK Vol.2</a>収録『緋色の霧』の圧縮ファイル展開ソースコードを利用させていただきました。     
+    <p><a href="http://www2.plala.or.jp/madoka/">まどか</a>氏<br>
+    MMC対応カーネルでの動作確認を行っていただきました。       
+    </td>       
+  </tr>    
+  <tr>    
+    <td class="bgcolor">&nbsp;</td>       
+  </tr>    
+  <tr>       
+    <td class="text">       
+    <h3 align="center">関連リンク</h3>    
+    <p><a href="http://www.aw.wakwak.com/~hitode/piece/index.html#plz">圧縮と展開</a>（p/wareさん）<br>    
+    ワークメモリなしで高速に展開できるLZSS形式のP/ECE版、『plz』。</p>    
+    <p><a href="http://www.autch.net/">Autch.net</a>（Yui N.さん）<br>     
+    通常ファイル、LZSS圧縮ファイル、zlib圧縮ファイルをパックする独自ファイルパック形式『par』。        
+    </td>        
+  </tr>        
+  <tr>        
+    <td class="bgcolor">&nbsp;</td>        
+  </tr>        
+  <center>        
+  </table>        
+  </center>        
+</div>        
+           
+<p align="center"><a href="http://zurachu.net/"><img src="banner.gif" border="1" width="200" height="40"></a></p>     
+           
+</body>           
+           
+</html>           

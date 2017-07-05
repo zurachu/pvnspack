@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http:www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+
+<head>
+<meta http-equiv="Content-Language" content="ja">
+<meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>P/ECE Tips - データを圧縮展開しよう - てとら★ぽっと / 
+ヅラChu's HomePage</title>
+<style type="text/css">
+<!--
+.bgcolor   { background-color:#99CCFF }
+.text      { line-height:150% ; font-size:10pt; padding-top:16px; padding-bottom:16px }
+BLOCKQUOTE { color:green; background-color:#ffffcc }
+-->
+</style>
+</head>
+
+<body>
+
+<div align="center">   
+  <center>   
+  <table border="0" width="640">   
+    <tr>   
+      <td class="bgcolor">   
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">  
+          <tr>  
+            <td><a href="http://zurachu.net/"><img src="banner.gif" border="1" width="200" height="40"></a></td>  
+      </center>  
+          <td>  
+            <p align="right"><b><font color="#FFFFFF" size="5">P/ECE Tips</font></b></td>   
+        </tr>   
+      </table>   
+    </td>   
+    </tr>   
+  <center>   
+    <tr>   
+      <td width="100%" class="text">   
+        <h2 align="center"><a name="ppack"></a>『ppack』で圧縮展開</h2>  
+        <p>　ppackは、P/ECE用の実行ファイルである.pexファイルを作成するためのソフトですが、その他の一般的なファイルも圧縮することができます。<a href="http://www.jc2.co.jp/p/mainmenu.html">P/ECE         
+HAND BOOK Vol.1</a>の開発Tips「データの圧縮展開を利用したい」に書かれている通り、</p>      
+        <blockquote>    
+<p>&gt; ppack -e -b1000 test.txt -otest.arc</p>                       
+        </blockquote>          
+        <p>とすると、test.txtがtest.arcに圧縮されます。</p>                      
+      </td>           
+    </tr>           
+    <tr>            
+      <td class="bgcolor">&nbsp;</td>           
+    </tr>           
+    <tr>           
+      <td class="text">           
+      </center>           
+<p>　これを展開するためのソースコードも開発Tipsに掲載されていますが、使用方法の説明がいささか不親切です。そんな中、先日<a href="http://6026.teacup.com/piecehandbook/bbs">P/ECE                        
+HAND BOOK 掲示板</a>に、<a href="http://www.marchen.to/">まかべひろし</a>氏による書き込みがありました。</p>                     
+<blockquote>圧縮の方法につきましては、Vol.1に書かれている通り、ppack.exeを使用して行います。<br>                    
+        こうしてできあがったファイルを、「圧縮データ」としてメモリに配置します。<br>                    
+        メモリに置く方法ですが、pceFileReadSct()                        
+を用いるといいと思います。<br>                       
+<br>                       
+この圧縮データが置かれたアドレスが<br>                       
+char *pArc;<br>                       
+であるとします。圧縮したデータはそのままでは使えませんので、使用時に<br>                      
+        展開することになります。展開したデータを入れるメモリを<br>                       
+char pData[128];<br>                       
+とします。128という数字は、元のデータサイズであり、各プログラムに応じて変更してください。<br>                     
+        圧縮元のサイズより多くメモリを確保することに注意してください。<br>                      
+<br>            
+Vol.1に記載されているunpack()関数は、<br>            
+unpack( pArc, pData );<br>            
+のようにして使います。これにより、pArcに格納されている圧縮データを展開し、pDataに書き込みます。</blockquote>                     
+<p>これにより、圧縮データをメモリに配置し、展開後のデータサイズ分だけメモリを確保すれば、展開できるということが分かりました。あらかじめ展開後のサイズが分かっているデータ（例えば、自分のプログラムでのみ読み込むようなデータ）についてはこれで対応できます。しかし、展開後のサイズが分からなければ、メモリの確保が上手くいきません。</p>                    
+<p>　解決策として、たとえば<a href="http://www.jc2.co.jp/p/mainmenu2.htm">P/ECE   
+HAND BOOK Vol.2</a>に収録されているゲームでは、独自のファイルパック形式を用いて、圧縮ファイルと非圧縮ファイルを混在させたパックファイル内に各ファイルの展開後のサイズを保持しています。圧縮ツールおよび展開関数のソースも添付されているので、参考にするといいでしょう。</p>            
+    </td>     
+  </tr>     
+  <center>     
+  <tr>     
+    <td class="bgcolor">&nbsp;</td>     
+  </tr>     
+  <tr>     
+    <td class="text">     
+    </center>     
+    　さて、圧縮されたファイルをバイナリエディタで解析してみましょう。他にもいくつかのファイルを圧縮して解析してみたところ、以下に示す特徴を読み取ることができました。
+    <p align="center"><img border="0" src="ppack.gif" width="560" height="164"></p>
+    <p>これより、先頭から001Ch=28バイト目のデータをlong型にキャストすることで、展開後のサイズを取得できることが分かります（ppack_getExpandSize(unsigned char* arcData)関数）。つまりは、先ほどの例のような加工を施さなくても圧縮ファイル単体でも適切なサイズのメモリを確保して展開することが可能になります。   
+  </td>   
+  </tr>   
+  <tr> 
+    <td class="bgcolor">&nbsp;</td>    
+  </tr> 
+    <tr>
+    <td class="text">    
+    <h2 align="center"><a name="pvnspack"></a>『pvnspack』のフォーマット</h2>
+    <p>　独自の圧縮ファイルパック形式『pvnspack』のフォーマットについて簡単に説明します。『pvnspack』で作成される圧縮パックファイルのフォーマットは、P/ECE標準のパックファイル（標準拡張子「.fpk」）のフォーマットと全く同じです。但しP/ECE標準のパックファイルはヘッダが</p>
+    <blockquote>
+      <p>DWORD_CHAR('F','P','A','K')→KAPF</p>
+    </blockquote>
+    <p>になっているのに対し、『pvnspack』で作成される圧縮パックファイルはヘッダが</p>
+    <blockquote>
+      <p>DWORD_CHAR('A','N','V','P')</p>
+    </blockquote>
+    <p>になっています。P/ECE標準のパックファイルについては、tools\filepack\デコーダsrc\filepack.cを参照下さい。   
+    </td>       
+    </tr>
+    <tr>
+    <td class="bgcolor">&nbsp;</td>       
+    </tr>
+  <center>       
+  </table>       
+  </center>       
+</div>       
+          
+<p align="center"><a href="http://zurachu.net/"><img src="banner.gif" border="1" width="200" height="40"></a></p>    
+          
+</body>          
+          
+</html>          
